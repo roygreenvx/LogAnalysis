@@ -1,68 +1,152 @@
-layui.use(['element','table'], function(){
-    var element = layui.element;
-    var table = layui.table;
-  
+layui.use(['element', 'table'], function () {
+  var element = layui.element;
+  var table = layui.table;
+
   table.render({
     elem: '#test'
-    ,url:'/test/table/demo1.json'
-    ,toolbar: '#toolbarDemo'
-    ,title: '用户数据表'
-    ,cols: [[
-      {type: 'checkbox', fixed: 'left'}
-      ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-      ,{field:'username', title:'用户名', width:120, edit: 'text'}
-      ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
-        return '<em>'+ res.email +'</em>'
-      }}
-      ,{field:'sex', title:'性别', width:80, edit: 'text', sort: true}
-      ,{field:'city', title:'城市', width:100}
-      ,{field:'sign', title:'签名'}
-      ,{field:'experience', title:'积分', width:80, sort: true}
-      ,{field:'ip', title:'IP', width:120}
-      ,{field:'logins', title:'登入次数', width:100, sort: true}
-      ,{field:'joinTime', title:'加入时间', width:120}
-      ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+    , cols: [[ //标题栏
+      { field: 'date', title: '日期' }
+      , { field: 'index', title: '首页' }
+      , { field: 'hgjj', title: '宏观经济' }
+      , { field: 'gjsd', title: '国际视点' }
+      , { field: 'jrzg', title: '金融中国' }
+      , { field: 'zdztsjk', title: '重点专题数据库' }
+      , { field: 'qqjj', title: '全球经济' }
     ]]
-    ,page: true
+    , data: [{
+      "date": "2018年1月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }, {
+      "date": "2018年2月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }, {
+      "date": "2018年3月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }, {
+      "date": "2018年4月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }, {
+      "date": "2018年5月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }, {
+      "date": "2018年6月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }, {
+      "date": "2018年7月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }, {
+      "date": "2018年8月"
+      , "index": "12345"
+      , "hgjj": "23456"
+      , "gjsd": "345"
+      , "jrzg": "567"
+      , "zdztsjk": "5678"
+      , "qqjj": "5678"
+    }]
+    //,skin: 'line' //表格风格
+    , even: true
+    //,page: true //是否显示分页
+    //,limits: [5, 7, 10]
+    //,limit: 5 //每页默认显示的数量
   });
-  
-  //头工具栏事件
-  table.on('toolbar(test)', function(obj){
-    var checkStatus = table.checkStatus(obj.config.id);
-    switch(obj.event){
-      case 'getCheckData':
-        var data = checkStatus.data;
-        layer.alert(JSON.stringify(data));
-      break;
-      case 'getCheckLength':
-        var data = checkStatus.data;
-        layer.msg('选中了：'+ data.length + ' 个');
-      break;
-      case 'isAll':
-        layer.msg(checkStatus.isAll ? '全选': '未全选');
-      break;
-    };
-  });
-  
-  //监听行工具事件
-  table.on('tool(test)', function(obj){
-    var data = obj.data;
-    //console.log(obj)
-    if(obj.event === 'del'){
-      layer.confirm('真的删除行么', function(index){
-        obj.del();
-        layer.close(index);
-      });
-    } else if(obj.event === 'edit'){
-      layer.prompt({
-        formType: 2
-        ,value: data.email
-      }, function(value, index){
-        obj.update({
-          email: value
-        });
-        layer.close(index);
-      });
+
+
+
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.getElementById('chart'));
+
+  // 指定图表的配置项和数据
+  var option = {
+    title: {
+      text: '浏览次数柱状图'
+    },
+    tooltip: {},
+    legend: {
+      type: 'scroll',
+      orient: 'vertical',
+      left: '1%',
+        top: '10%',
+      data: ['首页','宏观经济','国际视点','金融中国', '重点专题数据库','全球经济']
+    },
+    grid: {
+      left: '15%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      data: ["2018年1月", "2018年2月", "2018年3月", "2018年4月", "2018年5月", "2018年6月", "2018年7月", "2018年8月"]
+    },
+    yAxis: {},
+    series: [{
+      name: '首页',
+      type: 'bar',
+      stack: '浏览量',
+      data: [12345, 23542, 28954, 8951, 7889, 6954, 10001, 9999]
+    }, {
+      name: '宏观经济',
+      type: 'bar',
+      stack: '浏览量',
+      data: [6549, 8526, 4785, 9465, 4625, 7856, 8546, 6549]
+    }, {
+      name: '国际视点',
+      type: 'bar',
+      stack: '浏览量',
+      data: [6549, 8526, 4785, 9465, 4625, 7856, 8546, 6549]
+    }, {
+      name: '金融中国',
+      type: 'bar',
+      stack: '浏览量',
+      data: [6549, 8526, 4785, 9465, 4625, 7856, 8546, 6549]
+    }, {
+      name: '重点专题数据库',
+      type: 'bar',
+      stack: '浏览量',
+      data: [6549, 8526, 4785, 9465, 4625, 7856, 8546, 6549]
+    }, {
+      name: '全球经济',
+      type: 'bar',
+      stack: '浏览量',
+      data: [6549, 8526, 4785, 9465, 4625, 7856, 8546, 6549]
     }
-  });
+    ]
+  };
+
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
 });
