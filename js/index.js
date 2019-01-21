@@ -79,7 +79,7 @@ layui.use(['element', 'table'], function () {
       , "qqjj": "5678"
     }]
     //,skin: 'line' //表格风格
-    , even: true
+    //, even: true
     //,page: true //是否显示分页
     //,limits: [5, 7, 10]
     //,limit: 5 //每页默认显示的数量
